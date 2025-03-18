@@ -1,4 +1,0 @@
-com/alibaba/fastjson/1.2.24/fastjson-1.2.24.jar
-com/alibaba/fastjson/1.2.24/fastjson-1.2.24.jar.md5
-com/alibaba/fastjson/1.2.24/fastjson-1.2.24.pom
-com/alibaba/fastjson/1.2.24/fastjson-1.2.24.pom.md5

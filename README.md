@@ -39,3 +39,13 @@ ok 成功。
 ### 4. 还原 remote 仓库 url 
 将 remote 仓库 url 地址还原为原有 nexus proxy 仓库代理的外网源地址。
 
+
+### 5. Troubleshooting
+Nexus 查询接口默认不支持超过 1W 制品量  
+![alt text](img/error.png)  
+
+%nexus_home%/etc/fabric/elasticsearch.yml 添加以下配置：  
+```
+index.max_result_window: 50000  
+```  
+重启 Nexus

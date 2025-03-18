@@ -1,6 +1,6 @@
 #!/bin/bash
 
-proxy_repo="maven-central"
+proxy_repo="maven-releases"
 
 nexus_url="http://47.117.146.131:8083"
 
@@ -15,9 +15,8 @@ echo -e "$proxy_repo" | while read repository_name; do
   response=$(curl -s "$first_search_url")
   
   # 打印响应内容
-  echo "Proxy Repo $repository_name:"
-  echo "First page: $response" | jq -r '.items[].assets[].path' | grep -v '.sha1'
-
+  echo "Proxy Repo $repository_name: First page: "
+  echo "$response" | jq -r '.items[].assets[].path' | grep -v '.sha1'
   echo "$response" | jq -r '.items[].assets[].path' | grep -v '.sha1' >> ${repository_name}.txt
   
   continuationToken=`echo "$response" | jq -r '.continuationToken'`
@@ -26,7 +25,13 @@ echo -e "$proxy_repo" | while read repository_name; do
     while true; do
       search_url="$nexus_url/service/rest/v1/search?repository=$repository_name&continuationToken=$continuationToken"
       response=$(curl -s "$search_url")
-      echo "Next page continuationToken is $continuationToken : $response" | jq -r '.items[].assets[].path' | grep -v '.sha1' >> ${repository_name}.txt
+
+      echo "Next page continuationToken is $continuationToken "
+      echo "$response" | jq -r '.items[].assets[].path' | grep -v '.sha1'
+      echo "$response" | jq -r '.items[].assets[].path' | grep -v '.sha1' >> ${repository_name}.log
+      echo "$response" >> ${repository_name}.log
+
+      echo "$response" | jq -r '.items[].assets[].path' | grep -v '.sha1' >> ${repository_name}.txt
       continuationToken=`echo "$response" | jq -r '.continuationToken'`
       if [[ "$continuationToken" == "null" ]]; then
         break
